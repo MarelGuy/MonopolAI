@@ -1,15 +1,16 @@
 use std::net::SocketAddr;
 
-use axum::{Router, http::HeaderValue};
+use axum::{Router, http::HeaderValue, routing::get};
 use clap::Parser;
 use merror::MResult;
 use tower_http::cors::{AllowOrigin, CorsLayer};
 
-use crate::{appstate::AppState, merror::MResultExt};
+use crate::{appstate::AppState, merror::MResultExt, routes::health_handler};
 
 mod appstate;
 mod cli;
 mod merror;
+mod routes;
 
 pub fn cors_layer(origins: &[HeaderValue]) -> CorsLayer {
     CorsLayer::new()
@@ -50,6 +51,7 @@ async fn main() -> MResult<()> {
         .collect();
 
     let app = Router::new()
+        .route("/health", get(health_handler))
         .with_state(state)
         .layer(cors_layer(&allowed_origins));
 
