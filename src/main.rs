@@ -53,12 +53,7 @@ async fn main() -> MResult<()> {
         .await
         .map_err(|e| MError::internal(e.to_string()))?;
 
-    let version_file = match args.game_version.as_str() {
-        "UK" => "./public/uk_version.json",
-        _ => args.game_version.as_str(),
-    };
-
-    let file = tokio::fs::read_to_string(version_file).await?;
+    let file = tokio::fs::read_to_string(args.game_version.as_str()).await?;
 
     let version: Version = serde_json::from_str(&file)?;
 
