@@ -6,4 +6,12 @@ pub enum Actions {
     SellHome,
     MortgageProperty,
     UnmortgageProperty,
+    PayRent,
+    PayTax,
+    ChanceCard,
+    CommunityChestCard,
+    GoToJail,
+    JailTurn,
+    GetOutOfJail,
+    Nothing,
 }
