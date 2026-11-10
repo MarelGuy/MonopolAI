@@ -1,4 +1,6 @@
+use sqlx::Sqlite;
+
 #[derive(Clone)]
 pub struct AppState {
-    pub placeholder: u8,
+    pub pool: sqlx::Pool<Sqlite>,
 }

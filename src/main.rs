@@ -3,14 +3,21 @@ use std::net::SocketAddr;
 use axum::{Router, http::HeaderValue, routing::get};
 use clap::Parser;
 use merror::MResult;
+use sqlx::sqlite::SqlitePoolOptions;
 use tower_http::cors::{AllowOrigin, CorsLayer};
 
-use crate::{appstate::AppState, merror::MResultExt, routes::health_handler};
+use crate::{
+    appstate::AppState,
+    merror::{MError, MResultExt},
+    routes::health_handler,
+};
 
 mod appstate;
 mod cli;
+mod enums;
 mod merror;
 mod routes;
+mod schemas;
 
 pub fn cors_layer(origins: &[HeaderValue]) -> CorsLayer {
     CorsLayer::new()
@@ -40,7 +47,12 @@ async fn main() -> MResult<()> {
         )
         .init();
 
-    let state = AppState { placeholder: 42 };
+    let pool = SqlitePoolOptions::new()
+        .connect("file:monopolai.db")
+        .await
+        .map_err(|e| MError::internal(e.to_string()))?;
+
+    let state = AppState { pool };
 
     let allowed_origins: Vec<HeaderValue> = args
         .allowed_origins
