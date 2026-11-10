@@ -85,9 +85,9 @@ async fn main() -> MResult<()> {
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
 
     tracing::info!(
-        "Server API in ascolto su http://{} ({:?})",
+        "Server API listening on http://{}:{}",
         &args.host,
-        listener.local_addr()
+        &args.port
     );
 
     axum::serve(listener, app)
