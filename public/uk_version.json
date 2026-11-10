@@ -1,0 +1,247 @@
+{
+    "version": "1.0.0",
+    "spaces": [
+        {
+            "color": null,
+            "s_type": "Start",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "Brown",
+            "s_type": "Property",
+            "cost": 60,
+            "name": "Old Kent Road"
+        },
+        {
+            "color": null,
+            "s_type": "CommunityChest",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "Brown",
+            "s_type": "Property",
+            "cost": 60,
+            "name": "Whiechapel Road"
+        },
+        {
+            "color": null,
+            "s_type": "IncomeTax",
+            "cost": 200,
+            "name": null
+        },
+        {
+            "color": null,
+            "s_type": "TrainStation",
+            "cost": 200,
+            "name": "Kings Cross Station"
+        },
+        {
+            "color": "Blue",
+            "s_type": "Property",
+            "cost": 100,
+            "name": "The Angel Islington"
+        },
+        {
+            "color": null,
+            "s_type": "Chance",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "Blue",
+            "s_type": "Property",
+            "cost": 100,
+            "name": "Euston Road"
+        },
+        {
+            "color": "Blue",
+            "s_type": "Property",
+            "cost": 120,
+            "name": "Pentonville Road"
+        },
+        {
+            "color": null,
+            "s_type": "JustVisiting",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "DarkRed",
+            "s_type": "Property",
+            "cost": 140,
+            "name": "Pall Mall"
+        },
+        {
+            "color": null,
+            "s_type": "ElectricCompany",
+            "cost": 150,
+            "name": "Electric Company"
+        },
+        {
+            "color": "DarkRed",
+            "s_type": "Property",
+            "cost": 140,
+            "name": "Whitehall"
+        },
+        {
+            "color": "DarkRed",
+            "s_type": "Property",
+            "cost": 160,
+            "name": "Northumber Land Avenue"
+        },
+        {
+            "color": null,
+            "s_type": "TrainStation",
+            "cost": 200,
+            "name": "Marylebone Station"
+        },
+        {
+            "color": "Orange",
+            "s_type": "Property",
+            "cost": 180,
+            "name": "Bow Street"
+        },
+        {
+            "color": null,
+            "s_type": "CommunityChest",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "Orange",
+            "s_type": "Property",
+            "cost": 180,
+            "name": "Marlborough Street"
+        },
+        {
+            "color": "Orange",
+            "s_type": "Property",
+            "cost": 200,
+            "name": "Vine Street"
+        },
+        {
+            "color": null,
+            "s_type": "FreeParking",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "LightRed",
+            "s_type": "Property",
+            "cost": 220,
+            "name": "Strand"
+        },
+        {
+            "color": null,
+            "s_type": "Chance",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "LightRed",
+            "s_type": "Property",
+            "cost": 220,
+            "name": "Fleet Street"
+        },
+        {
+            "color": "LightRed",
+            "s_type": "Property",
+            "cost": 240,
+            "name": "Trafalgar Sqare"
+        },
+        {
+            "color": null,
+            "s_type": "TrainStation",
+            "cost": 200,
+            "name": "Fenchurch Station"
+        },
+        {
+            "color": "Yellow",
+            "s_type": "Property",
+            "cost": 260,
+            "name": "Leicester Square"
+        },
+        {
+            "color": "Yellow",
+            "s_type": "Property",
+            "cost": 260,
+            "name": "Coventry Square"
+        },
+        {
+            "color": null,
+            "s_type": "WaterWorks",
+            "cost": 150,
+            "name": "Water Works"
+        },
+        {
+            "color": "Yellow",
+            "s_type": "Property",
+            "cost": 280,
+            "name": "Piccadilly"
+        },
+        {
+            "color": null,
+            "s_type": "GoToJail",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "Green",
+            "s_type": "Property",
+            "cost": 300,
+            "name": "Regent Street"
+        },
+        {
+            "color": "Green",
+            "s_type": "Property",
+            "cost": 300,
+            "name": "Oxford Street"
+        },
+        {
+            "color": null,
+            "s_type": "CommunityChest",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "Green",
+            "s_type": "Property",
+            "cost": 320,
+            "name": "Bond Street"
+        },
+        {
+            "color": null,
+            "s_type": "TrainStation",
+            "cost": 200,
+            "name": "Liverpool St. Station"
+        },
+        {
+            "color": null,
+            "s_type": "Chance",
+            "cost": null,
+            "name": null
+        },
+        {
+            "color": "DarkBlue",
+            "s_type": "Property",
+            "cost": 350,
+            "name": "Park Lane"
+        },
+        {
+            "color": null,
+            "s_type": "SuperTax",
+            "cost": 100,
+            "name": null
+        },
+        {
+            "color": "DarkBlue",
+            "s_type": "Property",
+            "cost": 400,
+            "name": "Mayfair"
+        }
+    ],
+    "chance_cards": [],
+    "community_chest_cards": []
+}
