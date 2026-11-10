@@ -37,35 +37,44 @@ pub struct Args {
     )]
     pub log_level: String,
 
-    /// Base URL of the remote OpenAI-compatible LLM API (e.g. Alibaba Cloud
-    /// Model Studio). Defaults to `OpenCode` Go when only the key is set.
-    #[arg(
-        long,
-        env = "LLM_API_URL",
-        required = true,
-        help_heading = "LLM Service"
-    )]
-    pub llm_api_url: Option<String>,
+    // /// Base URL of the remote OpenAI-compatible LLM API (e.g. Alibaba Cloud
+    // /// Model Studio). Defaults to `OpenCode` Go when only the key is set.
+    // #[arg(
+    //     long,
+    //     env = "LLM_API_URL",
+    //     required = true,
+    //     help_heading = "LLM Service"
+    // )]
+    // pub llm_api_url: Option<String>,
 
-    /// API key for the remote LLM API: when set, chat generation uses the
-    /// remote endpoint instead of the local llama-server
-    #[arg(
-        long,
-        env = "LLM_API_KEY",
-        required = true,
-        help_heading = "LLM Service"
-    )]
-    pub llm_api_key: Option<String>,
+    // /// API key for the remote LLM API: when set, chat generation uses the
+    // /// remote endpoint instead of the local llama-server
+    // #[arg(
+    //     long,
+    //     env = "LLM_API_KEY",
+    //     required = true,
+    //     help_heading = "LLM Service"
+    // )]
+    // pub llm_api_key: Option<String>,
 
-    /// Model ID sent to the remote LLM API (e.g. deepseek-v4.1-flash).
-    /// Used as the default for all tiers when a tier-specific model is unset.
+    // /// Model ID sent to the remote LLM API (e.g. deepseek-v4.1-flash).
+    // /// Used as the default for all tiers when a tier-specific model is unset.
+    // #[arg(
+    //     long,
+    //     env = "LLM_API_MODEL",
+    //     required = true,
+    //     help_heading = "LLM Service"
+    // )]
+    // pub llm_api_model: String,
+    /// Version of the game you want to play, if not supported by default, you can also import a file
+    /// Currently available versions: UK version
     #[arg(
         long,
-        env = "LLM_API_MODEL",
+        env = "GAME_VERSION",
         required = true,
-        help_heading = "LLM Service"
+        help_heading = "Version of the game"
     )]
-    pub llm_api_model: String,
+    pub game_version: String,
 
     /// Comma-separated list of allowed CORS origins
     #[arg(long, env, default_value = "*", help_heading = "Security")]
