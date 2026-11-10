@@ -1,7 +1,5 @@
-use axum::{Json, extract::State};
+use axum::Json;
 
-use crate::appstate::AppState;
-
-pub async fn health_handler(State(state): State<AppState>) -> Json<bool> {
+pub async fn health_handler() -> Json<bool> {
     Json(true)
 }

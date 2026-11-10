@@ -1,3 +1,6 @@
+use serde::Deserialize;
+
+#[derive(Deserialize, Clone, Debug)]
 pub enum SpaceColor {
     Brown,
     LightRed,

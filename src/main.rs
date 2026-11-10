@@ -10,6 +10,7 @@ use crate::{
     appstate::AppState,
     merror::{MError, MResultExt},
     routes::health_handler,
+    schemas::Version,
 };
 
 mod appstate;
@@ -48,11 +49,20 @@ async fn main() -> MResult<()> {
         .init();
 
     let pool = SqlitePoolOptions::new()
-        .connect("file:monopolai.db")
+        .connect("file:monopolai.db?mode=rwc")
         .await
         .map_err(|e| MError::internal(e.to_string()))?;
 
-    let state = AppState { pool };
+    let version_file = match args.game_version.as_str() {
+        "UK" => "./public/uk_version.json",
+        _ => args.game_version.as_str(),
+    };
+
+    let file = tokio::fs::read_to_string(version_file).await?;
+
+    let version: Version = serde_json::from_str(&file)?;
+
+    let state = AppState { pool, version };
 
     let allowed_origins: Vec<HeaderValue> = args
         .allowed_origins

@@ -2,16 +2,16 @@ use uuid::Uuid;
 
 use crate::{
     enums::Piece,
-    schemas::{Position, Turn},
+    schemas::{Space, Turn},
 };
 
 #[derive(sqlx::FromRow)]
-pub struct Player {
+pub struct Player<'a> {
     id: Uuid,
     piece: Piece,
     money: u16,
     name: String,
     turns: Vec<Turn>,
-    old_position: Position,
-    current_position: Position,
+    old_position: &'a Space,
+    current_position: &'a Space,
 }

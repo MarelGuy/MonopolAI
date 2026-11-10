@@ -1,7 +1,9 @@
 mod player;
-mod position;
+mod space;
 mod turn;
+mod version;
 
 pub use player::Player;
-pub use position::Position;
+pub use space::Space;
 pub use turn::Turn;
+pub use version::Version;

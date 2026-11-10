@@ -1,13 +1,17 @@
-use crate::enums::SpaceColor;
+use serde::Deserialize;
 
+#[derive(Deserialize, Clone, Debug)]
 pub enum SpaceType {
     Start,
     CommunityChest,
     Chance,
-    Property(SpaceColor, u8),
-    TrainStation(u8),
+    Property,
+    TrainStation,
     IncomeTax,
     ElectricCompany,
     WaterWorks,
     SuperTax,
+    JustVisiting,
+    FreeParking,
+    GoToJail,
 }
