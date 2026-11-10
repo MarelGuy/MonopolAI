@@ -64,18 +64,24 @@ async fn main() -> MResult<()> {
 
     let state = AppState { pool, version };
 
-    let allowed_origins: Vec<HeaderValue> = args
-        .allowed_origins
-        .split(',')
-        .map(str::trim)
-        .filter(|o| !o.is_empty())
-        .filter_map(|o| o.parse::<HeaderValue>().ok())
-        .collect();
+    let app_cors_layer = if &args.allowed_origins == "*" {
+        CorsLayer::new().allow_origin(AllowOrigin::any())
+    } else {
+        let allowed_origins: Vec<HeaderValue> = args
+            .allowed_origins
+            .split(',')
+            .map(str::trim)
+            .filter(|o| !o.is_empty())
+            .filter_map(|o| o.parse::<HeaderValue>().ok())
+            .collect();
+
+        cors_layer(&allowed_origins)
+    };
 
     let app = Router::new()
         .route("/health", get(health_handler))
         .with_state(state)
-        .layer(cors_layer(&allowed_origins));
+        .layer(app_cors_layer);
 
     let addr: SocketAddr = format!("{}:{}", args.host, args.port)
         .parse()
