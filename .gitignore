@@ -28,3 +28,6 @@ target
 /target
 
 monopolai.db
+
+# VS Code workspace settings
+.vscode/
