@@ -12,6 +12,7 @@ use axum::{
     Json, http::StatusCode, http::header::ToStrError as HeaderToStrError, response::IntoResponse,
 };
 use serde_json::Error as SerdeJsonError;
+use sqlx::Error as SqlxError;
 use tokio::task::JoinError;
 
 pub type MResult<T> = std::result::Result<T, MError>;
@@ -162,7 +163,8 @@ impl_from_for_le_error!(
     FmtError,
     TryFromIntError,
     HeaderToStrError,
-    SerdeJsonError
+    SerdeJsonError,
+    SqlxError
 );
 
 pub fn bad_request(msg: impl Into<String>) -> MError {

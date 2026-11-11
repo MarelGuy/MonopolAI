@@ -1,6 +1,10 @@
 use std::net::SocketAddr;
 
-use axum::{Router, http::HeaderValue, routing::get};
+use axum::{
+    Router,
+    http::HeaderValue,
+    routing::{get, post},
+};
 use clap::Parser;
 use merror::MResult;
 use sqlx::sqlite::SqlitePoolOptions;
@@ -9,13 +13,14 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 use crate::{
     appstate::AppState,
     merror::{MError, MResultExt},
-    routes::health_handler,
+    routes::{health_handler, post_player_handler},
 };
 
 mod appstate;
 mod cli;
 mod enums;
 mod merror;
+mod requests;
 mod routes;
 mod schemas;
 
@@ -52,6 +57,11 @@ async fn main() -> MResult<()> {
         .await
         .map_err(|e| MError::internal(e.to_string()))?;
 
+    sqlx::migrate!("./migrations")
+        .run(&pool)
+        .await
+        .context("Failed to apply database migrations")?;
+
     let file = tokio::fs::read_to_string(args.game_edition.as_str()).await?;
 
     let edition = serde_json::from_str(&file)?;
@@ -73,6 +83,7 @@ async fn main() -> MResult<()> {
     };
 
     let app = Router::new()
+        .route("/player", post(post_player_handler))
         .route("/health", get(health_handler))
         .with_state(state)
         .layer(app_cors_layer);

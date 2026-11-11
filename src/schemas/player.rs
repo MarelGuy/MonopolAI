@@ -1,17 +1,72 @@
+use sqlx::SqlitePool;
 use uuid::Uuid;
 
-use crate::{
-    enums::Piece,
-    schemas::{Space, Turn},
-};
+use crate::merror::MResult;
 
 #[derive(sqlx::FromRow)]
-pub struct Player<'a> {
-    id: Uuid,
-    piece: Piece,
-    money: u16,
-    name: String,
-    turns: Vec<Turn>,
-    old_position: &'a Space,
-    current_position: &'a Space,
+pub struct Player {
+    pub id: Uuid,
+    pub name: String,
+    pub wins: usize,
+}
+
+impl Player {
+    pub fn new(name: String) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            name,
+            wins: 0,
+        }
+    }
+
+    pub async fn insert(&self, pool: &SqlitePool) -> MResult<()> {
+        sqlx::query_file!(
+            "src/queries/insert_player.sql",
+            self.id,
+            self.name,
+            u32::try_from(self.wins)?
+        )
+        .execute(pool)
+        .await?;
+
+        Ok(())
+    }
+
+    pub async fn get(pool: &SqlitePool, id: Uuid) -> MResult<Option<Self>> {
+        let row = sqlx::query_file!("src/queries/get_player.sql", id)
+            .fetch_optional(pool)
+            .await?;
+
+        Ok(row.map(|row| Self {
+            id: row.id,
+            name: row.name,
+            wins: row.wins as usize,
+        }))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sqlx::sqlite::SqlitePoolOptions;
+
+    #[tokio::test]
+    async fn inserts_and_loads_a_player() {
+        let pool = SqlitePoolOptions::new()
+            .max_connections(1)
+            .connect("sqlite::memory:")
+            .await
+            .unwrap();
+
+        sqlx::migrate!("./migrations").run(&pool).await.unwrap();
+
+        let player = Player::new("Alice".to_string());
+        player.insert(&pool).await.unwrap();
+
+        let loaded = Player::get(&pool, player.id).await.unwrap().unwrap();
+
+        assert_eq!(loaded.id, player.id);
+        assert_eq!(loaded.name, "Alice");
+        assert_eq!(loaded.wins, 0);
+    }
 }
