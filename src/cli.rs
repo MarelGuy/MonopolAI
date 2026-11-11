@@ -66,15 +66,15 @@ pub struct Args {
     //     help_heading = "LLM Service"
     // )]
     // pub llm_api_model: String,
-    /// Version of the game you want to play, if not supported by default, you can also import a file
-    /// Currently available versions: UK version
+    /// Edition of the game you want to play, if not supported by default, you can also import a file
+    /// Currently available editions: UK edition
     #[arg(
         long,
-        env = "GAME_VERSION",
+        env = "GAME_EDITION",
         required = true,
-        help_heading = "Version of the game"
+        help_heading = "Edition of the game"
     )]
-    pub game_version: String,
+    pub game_edition: String,
 
     /// Comma-separated list of allowed CORS origins
     #[arg(long, env, default_value = "*", help_heading = "Security")]

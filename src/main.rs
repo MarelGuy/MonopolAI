@@ -10,7 +10,6 @@ use crate::{
     appstate::AppState,
     merror::{MError, MResultExt},
     routes::health_handler,
-    schemas::Version,
 };
 
 mod appstate;
@@ -53,11 +52,11 @@ async fn main() -> MResult<()> {
         .await
         .map_err(|e| MError::internal(e.to_string()))?;
 
-    let file = tokio::fs::read_to_string(args.game_version.as_str()).await?;
+    let file = tokio::fs::read_to_string(args.game_edition.as_str()).await?;
 
-    let version: Version = serde_json::from_str(&file)?;
+    let edition = serde_json::from_str(&file)?;
 
-    let state = AppState { pool, version };
+    let state = AppState { pool, edition };
 
     let app_cors_layer = if &args.allowed_origins == "*" {
         CorsLayer::new().allow_origin(AllowOrigin::any())

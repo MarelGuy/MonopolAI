@@ -1,9 +1,9 @@
 use sqlx::Sqlite;
 
-use crate::schemas::Version;
+use crate::schemas::Edition;
 
 #[derive(Clone)]
 pub struct AppState {
     pub pool: sqlx::Pool<Sqlite>,
-    pub version: Version,
+    pub edition: Edition,
 }
