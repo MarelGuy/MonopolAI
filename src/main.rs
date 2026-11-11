@@ -13,7 +13,7 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 use crate::{
     appstate::AppState,
     merror::{MError, MResultExt},
-    routes::{health_handler, post_player_handler},
+    routes::{health_handler, post_match_handler, post_player_handler},
 };
 
 mod appstate;
@@ -83,6 +83,7 @@ async fn main() -> MResult<()> {
     };
 
     let app = Router::new()
+        .route("/match", post(post_match_handler))
         .route("/player", post(post_player_handler))
         .route("/health", get(health_handler))
         .with_state(state)
