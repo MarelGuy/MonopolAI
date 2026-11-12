@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\n    id AS \"id: Uuid\",\n    version,\n    winner_id AS \"winner_id: Uuid\"\nFROM matches\nWHERE id = ?1;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob",
+        "origin": {
+          "Table": {
+            "table": "matches",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "version",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "matches",
+            "name": "version"
+          }
+        }
+      },
+      {
+        "name": "winner_id: Uuid",
+        "ordinal": 2,
+        "type_info": "Blob",
+        "origin": {
+          "Table": {
+            "table": "matches",
+            "name": "winner_id"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "7c45eeefdf1c5367f6dbd7e198d3e1e648b9b6894f9294a5b959333daaeb93fd"
+}

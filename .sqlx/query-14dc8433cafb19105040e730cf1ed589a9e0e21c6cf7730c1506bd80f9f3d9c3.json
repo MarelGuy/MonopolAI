@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\n    id AS \"id: Uuid\",\n    dice_result AS \"dice_result: u32\",\n    action AS \"action: Actions\",\n    player_id AS \"player_id: Uuid\"\nFROM turns\nWHERE match_id = ?1\nORDER BY rowid;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob",
+        "origin": {
+          "Table": {
+            "table": "turns",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "dice_result: u32",
+        "ordinal": 1,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "turns",
+            "name": "dice_result"
+          }
+        }
+      },
+      {
+        "name": "action: Actions",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "turns",
+            "name": "action"
+          }
+        }
+      },
+      {
+        "name": "player_id: Uuid",
+        "ordinal": 3,
+        "type_info": "Blob",
+        "origin": {
+          "Table": {
+            "table": "turns",
+            "name": "player_id"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "14dc8433cafb19105040e730cf1ed589a9e0e21c6cf7730c1506bd80f9f3d9c3"
+}

@@ -1,0 +1,98 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\n    p.id AS \"id: Uuid\",\n    p.name,\n    p.wins AS \"wins: u32\",\n    mp.piece AS \"piece: Piece\",\n    mp.money AS \"money: u32\",\n    mp.old_position AS \"old_position: u32\",\n    mp.current_position AS \"current_position: u32\"\nFROM match_players AS mp\nJOIN players AS p ON p.id = mp.player_id\nWHERE mp.match_id = ?1\nORDER BY mp.rowid;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob",
+        "origin": {
+          "Table": {
+            "table": "players",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "players",
+            "name": "name"
+          }
+        }
+      },
+      {
+        "name": "wins: u32",
+        "ordinal": 2,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "players",
+            "name": "wins"
+          }
+        }
+      },
+      {
+        "name": "piece: Piece",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "match_players",
+            "name": "piece"
+          }
+        }
+      },
+      {
+        "name": "money: u32",
+        "ordinal": 4,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "match_players",
+            "name": "money"
+          }
+        }
+      },
+      {
+        "name": "old_position: u32",
+        "ordinal": 5,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "match_players",
+            "name": "old_position"
+          }
+        }
+      },
+      {
+        "name": "current_position: u32",
+        "ordinal": 6,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "match_players",
+            "name": "current_position"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "adf34bdfac64c52a88f99f7e89166610e4ebc54a33eb5017699c19330fdabb0a"
+}

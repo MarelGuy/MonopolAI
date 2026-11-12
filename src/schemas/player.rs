@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use crate::{appstate::AppState, merror::MResult};
 
-#[derive(sqlx::FromRow, Serialize)]
+#[derive(sqlx::FromRow, Serialize, Clone)]
 pub struct Player {
     pub id: Uuid,
     pub name: String,

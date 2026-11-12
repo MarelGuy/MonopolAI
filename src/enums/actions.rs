@@ -1,3 +1,5 @@
+#[derive(sqlx::Type, serde::Serialize, Clone, Debug)]
+#[sqlx(rename_all = "PascalCase")]
 pub enum Actions {
     BuyProperty,
     BuyHome,

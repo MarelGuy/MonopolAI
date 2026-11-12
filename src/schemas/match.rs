@@ -1,24 +1,27 @@
+use serde::Serialize;
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
 use crate::{
     appstate::AppState,
-    enums::Piece,
-    merror::{MResult, bad_request},
-    schemas::{Edition, MatchPlayer, Player, Turn},
+    enums::{Actions, Piece},
+    merror::{MError, MResult, bad_request},
+    schemas::{Edition, MatchPlayer, Player, Space, Turn},
 };
 
-#[derive(sqlx::FromRow)]
-pub struct Match<'a> {
+#[derive(Serialize)]
+pub struct Match {
     id: Uuid,
+    version: String,
     players: Vec<MatchPlayer>,
-    turns: Vec<&'a Turn>,
-    edition: &'a Edition,
-    winner: Option<&'a MatchPlayer>,
+    turns: Vec<Turn>,
+    #[serde(skip)]
+    edition: Edition,
+    winner: Option<MatchPlayer>,
 }
 
-impl<'a> Match<'a> {
-    pub async fn new(players: Vec<(Uuid, Piece)>, state: &'a AppState) -> MResult<Self> {
+impl Match {
+    pub async fn new(players: Vec<(Uuid, Piece)>, state: &AppState) -> MResult<Self> {
         let mut match_players: Vec<MatchPlayer> = vec![];
 
         for p_id in players {
@@ -31,20 +34,98 @@ impl<'a> Match<'a> {
 
         Ok(Self {
             id: Uuid::new_v4(),
+            version: state.edition.version.clone(),
             players: match_players,
             turns: vec![],
-            edition: &state.edition,
+            edition: state.edition.clone(),
             winner: None,
         })
     }
 
+    pub async fn get(state: &AppState, id: Uuid) -> MResult<Option<Self>> {
+        let Some(row) = sqlx::query_file!("src/queries/get_match.sql", id)
+            .fetch_optional(&state.pool)
+            .await?
+        else {
+            return Ok(None);
+        };
+
+        let mut players = vec![];
+        for row in sqlx::query_file!("src/queries/get_match_players.sql", id)
+            .fetch_all(&state.pool)
+            .await?
+        {
+            let player = Player {
+                id: row.id,
+                name: row.name,
+                wins: row.wins as usize,
+            };
+            let old_position = Some(Self::space_at(&state.edition, row.old_position)?);
+            let current_position = Self::space_at(&state.edition, row.current_position)?;
+
+            players.push(MatchPlayer::from_parts(
+                player,
+                row.piece,
+                u16::try_from(row.money)?,
+                old_position,
+                current_position,
+            ));
+        }
+
+        let mut turns = vec![];
+        for row in sqlx::query_file!("src/queries/get_match_turns.sql", id)
+            .fetch_all(&state.pool)
+            .await?
+        {
+            let player = players
+                .iter()
+                .find(|player| player.player.id == row.player_id)
+                .cloned()
+                .ok_or_else(|| MError::internal("Turn references an unknown match player"))?;
+
+            turns.push(Turn::from_parts(
+                row.id,
+                u8::try_from(row.dice_result)?,
+                row.action,
+                player,
+            ));
+        }
+
+        let winner = row.winner_id.and_then(|id| {
+            players
+                .iter()
+                .find(|player| player.player.id == id)
+                .cloned()
+        });
+
+        let mut edition = state.edition.clone();
+        edition.version.clone_from(&row.version);
+
+        Ok(Some(Self {
+            id: row.id,
+            version: row.version,
+            players,
+            turns,
+            edition,
+            winner,
+        }))
+    }
+
+    fn space_at(edition: &Edition, position: u32) -> MResult<Space> {
+        edition
+            .spaces
+            .get(position as usize)
+            .cloned()
+            .ok_or_else(|| MError::internal(format!("Invalid space position: {position}")))
+    }
+
     pub async fn insert(&self, pool: &SqlitePool) -> MResult<()> {
-        let winner_id = self.winner.map(|p| p.player.id);
+        let winner_id = self.winner.as_ref().map(|p| p.player.id);
 
         sqlx::query_file!(
             "src/queries/insert_match.sql",
             self.id,
-            &self.edition.version,
+            &self.version,
             winner_id
         )
         .execute(pool)

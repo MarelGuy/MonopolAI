@@ -1,8 +1,11 @@
+use serde::Serialize;
+
 use crate::{
     enums::Piece,
     schemas::{Player, Space},
 };
 
+#[derive(Clone, Serialize)]
 pub struct MatchPlayer {
     pub player: Player,
     piece: Piece,
@@ -19,6 +22,22 @@ impl MatchPlayer {
             money: 0,
             old_position: None,
             current_position: Space::default(),
+        }
+    }
+
+    pub(crate) const fn from_parts(
+        player: Player,
+        piece: Piece,
+        money: u16,
+        old_position: Option<Space>,
+        current_position: Space,
+    ) -> Self {
+        Self {
+            player,
+            piece,
+            money,
+            old_position,
+            current_position,
         }
     }
 }

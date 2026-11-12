@@ -15,7 +15,7 @@ use crate::{
     merror::{MError, MResultExt},
     routes::{
         health_handler,
-        r#match::post_match_handler,
+        r#match::{get_match_handler, post_match_handler},
         player::{delete_player_handler, get_player_handler, post_player_handler},
     },
 };
@@ -88,6 +88,7 @@ async fn main() -> MResult<()> {
 
     let app = Router::new()
         .route("/match", post(post_match_handler))
+        .route("/match/{id}", get(get_match_handler))
         .route("/player", post(post_player_handler))
         .route(
             "/player/{id}",
