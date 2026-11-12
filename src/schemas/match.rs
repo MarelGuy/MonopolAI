@@ -174,17 +174,18 @@ impl Match {
 
         for player in &self.players {
             let old_position = player
-                .old_position()
-                .unwrap_or_else(|| player.current_position());
+                .old_position
+                .as_ref()
+                .unwrap_or(&player.current_position);
             let old_position = Self::space_index(&self.edition, old_position)?;
-            let current_position = Self::space_index(&self.edition, player.current_position())?;
+            let current_position = Self::space_index(&self.edition, &player.current_position)?;
 
             sqlx::query_file!(
                 "src/queries/insert_match_player.sql",
                 self.id,
                 player.player.id,
-                player.piece(),
-                u32::from(player.money()),
+                player.piece,
+                u32::from(player.money),
                 old_position,
                 current_position
             )

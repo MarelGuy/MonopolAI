@@ -8,10 +8,10 @@ use crate::{
 #[derive(Clone, Serialize)]
 pub struct MatchPlayer {
     pub player: Player,
-    piece: Piece,
-    money: u16,
-    old_position: Option<Space>,
-    current_position: Space,
+    pub piece: Piece,
+    pub money: u16,
+    pub old_position: Option<Space>,
+    pub current_position: Space,
 }
 
 impl MatchPlayer {
@@ -39,21 +39,5 @@ impl MatchPlayer {
             old_position,
             current_position,
         }
-    }
-
-    pub(crate) const fn piece(&self) -> &Piece {
-        &self.piece
-    }
-
-    pub(crate) const fn money(&self) -> u16 {
-        self.money
-    }
-
-    pub(crate) fn old_position(&self) -> Option<&Space> {
-        self.old_position.as_ref()
-    }
-
-    pub(crate) const fn current_position(&self) -> &Space {
-        &self.current_position
     }
 }
