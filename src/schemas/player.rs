@@ -2,7 +2,10 @@ use serde::Serialize;
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
-use crate::{appstate::AppState, merror::MResult};
+use crate::{
+    appstate::AppState,
+    merror::{MError, MResult},
+};
 
 #[derive(sqlx::FromRow, Serialize, Clone)]
 pub struct Player {
@@ -21,16 +24,22 @@ impl Player {
     }
 
     pub async fn insert(&self, pool: &SqlitePool) -> MResult<()> {
-        sqlx::query_file!(
+        let result = sqlx::query_file!(
             "src/queries/insert_player.sql",
             self.id,
             self.name,
             u32::try_from(self.wins)?
         )
         .execute(pool)
-        .await?;
+        .await;
 
-        Ok(())
+        match result {
+            Ok(_) => Ok(()),
+            Err(sqlx::Error::Database(error)) if error.is_unique_violation() => {
+                Err(MError::conflict("A player with this name already exists"))
+            }
+            Err(error) => Err(error.into()),
+        }
     }
 
     pub async fn get(pool: &SqlitePool, id: Uuid) -> MResult<Option<Self>> {

@@ -11,6 +11,8 @@ pub mod player;
 
 pub use health::health_handler;
 
+#[cfg(test)]
+mod tests;
 
 pub fn router(state: AppState) -> Router {
     Router::new()
