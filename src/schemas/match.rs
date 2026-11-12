@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use serde::Serialize;
 use sqlx::SqlitePool;
 use uuid::Uuid;
@@ -23,10 +25,15 @@ pub struct Match {
 impl Match {
     pub async fn new(players: Vec<(Uuid, Piece)>, state: &AppState) -> MResult<Self> {
         let mut match_players: Vec<MatchPlayer> = vec![];
+        let mut player_ids = HashSet::new();
 
-        for p_id in players {
-            if let Some(player) = Player::get(&state.pool, p_id.0).await? {
-                match_players.push(MatchPlayer::new((player, p_id.1)));
+        for (player_id, piece) in players {
+            if !player_ids.insert(player_id) {
+                return Err(bad_request("A player cannot join the same match twice"));
+            }
+
+            if let Some(player) = Player::get(&state.pool, player_id).await? {
+                match_players.push(MatchPlayer::new((player, piece)));
             } else {
                 return Err(bad_request("Player does not exist"));
             }
