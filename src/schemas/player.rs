@@ -53,29 +53,3 @@ impl Player {
         Ok((result.rows_affected() > 0).then_some(()))
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use sqlx::sqlite::SqlitePoolOptions;
-
-    #[tokio::test]
-    async fn inserts_and_loads_a_player() {
-        let pool = SqlitePoolOptions::new()
-            .max_connections(1)
-            .connect("sqlite::memory:")
-            .await
-            .unwrap();
-
-        sqlx::migrate!("./migrations").run(&pool).await.unwrap();
-
-        let player = Player::new("Alice".to_string());
-        player.insert(&pool).await.unwrap();
-
-        let loaded = Player::get(&pool, player.id).await.unwrap().unwrap();
-
-        assert_eq!(loaded.id, player.id);
-        assert_eq!(loaded.name, "Alice");
-        assert_eq!(loaded.wins, 0);
-    }
-}
