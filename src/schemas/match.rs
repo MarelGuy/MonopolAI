@@ -136,6 +136,7 @@ impl Match {
 
     pub async fn insert(&self, pool: &SqlitePool) -> MResult<()> {
         let winner_id = self.winner.as_ref().map(|p| p.player.id);
+        let mut transaction = pool.begin().await?;
 
         sqlx::query_file!(
             "src/queries/insert_match.sql",
@@ -143,9 +144,41 @@ impl Match {
             &self.version,
             winner_id
         )
-        .execute(pool)
+        .execute(&mut *transaction)
         .await?;
 
+        for player in &self.players {
+            let old_position = player
+                .old_position()
+                .unwrap_or_else(|| player.current_position());
+            let old_position = Self::space_index(&self.edition, old_position)?;
+            let current_position = Self::space_index(&self.edition, player.current_position())?;
+
+            sqlx::query_file!(
+                "src/queries/insert_match_player.sql",
+                self.id,
+                player.player.id,
+                player.piece(),
+                u32::from(player.money()),
+                old_position,
+                current_position
+            )
+            .execute(&mut *transaction)
+            .await?;
+        }
+
+        transaction.commit().await?;
+
         Ok(())
+    }
+
+    fn space_index(edition: &Edition, space: &Space) -> MResult<u32> {
+        let index = edition
+            .spaces
+            .iter()
+            .position(|candidate| candidate == space)
+            .ok_or_else(|| MError::internal("Player position is not part of the edition"))?;
+
+        Ok(u32::try_from(index)?)
     }
 }

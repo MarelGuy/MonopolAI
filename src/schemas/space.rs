@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::enums::{SpaceColor, SpaceType};
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq)]
 pub struct Space {
     color: Option<SpaceColor>,
     s_type: SpaceType,

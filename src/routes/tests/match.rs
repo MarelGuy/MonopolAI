@@ -49,7 +49,7 @@ async fn get_match_returns_the_match() {
     assert_eq!(status, StatusCode::OK);
     assert_eq!(body["id"], id.to_string());
     assert_eq!(body["version"], "1.0.0");
-    assert!(body["players"].is_array());
+    assert_eq!(body["players"].as_array().unwrap().len(), 2);
     assert!(body["turns"].is_array());
 }
 

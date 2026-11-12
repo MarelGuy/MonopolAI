@@ -40,4 +40,20 @@ impl MatchPlayer {
             current_position,
         }
     }
+
+    pub(crate) const fn piece(&self) -> &Piece {
+        &self.piece
+    }
+
+    pub(crate) const fn money(&self) -> u16 {
+        self.money
+    }
+
+    pub(crate) fn old_position(&self) -> Option<&Space> {
+        self.old_position.as_ref()
+    }
+
+    pub(crate) const fn current_position(&self) -> &Space {
+        &self.current_position
+    }
 }

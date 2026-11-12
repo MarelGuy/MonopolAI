@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO match_players (match_id, player_id, piece, money, old_position, current_position)\nVALUES (?1, ?2, ?3, ?4, ?5, ?6);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "efcf6ddfbf73945e4fd1c464570b930a6a43dac7e060c200b197f212ab9ffc76"
+}
