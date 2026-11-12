@@ -22,9 +22,6 @@ pub enum MError {
     BadRequest(String),
     Conflict(String),
     NotFound(String),
-    PermissionDenied(String),
-    Unauthenticated(String),
-    DeadlineExceeded(String),
     Internal(String),
 }
 
@@ -41,18 +38,6 @@ impl MError {
         Self::NotFound(msg.into())
     }
 
-    pub fn permission_denied(msg: impl Into<String>) -> Self {
-        Self::PermissionDenied(msg.into())
-    }
-
-    pub fn unauthenticated(msg: impl Into<String>) -> Self {
-        Self::Unauthenticated(msg.into())
-    }
-
-    pub fn deadline_exceeded(msg: impl Into<String>) -> Self {
-        Self::DeadlineExceeded(msg.into())
-    }
-
     pub fn internal(msg: impl Into<String>) -> Self {
         Self::Internal(msg.into())
     }
@@ -64,9 +49,6 @@ impl Display for MError {
             Self::BadRequest(msg) => write!(f, "Bad request: {msg}"),
             Self::Conflict(msg) => write!(f, "Conflict: {msg}"),
             Self::NotFound(msg) => write!(f, "Not found: {msg}"),
-            Self::PermissionDenied(msg) => write!(f, "Permission denied: {msg}"),
-            Self::Unauthenticated(msg) => write!(f, "Unauthenticated: {msg}"),
-            Self::DeadlineExceeded(msg) => write!(f, "Deadline exceeded: {msg}"),
             Self::Internal(msg) => write!(f, "Internal error: {msg}"),
         }
     }
@@ -80,9 +62,6 @@ impl IntoResponse for MError {
             Self::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg),
             Self::Conflict(msg) => (StatusCode::CONFLICT, msg),
             Self::NotFound(msg) => (StatusCode::NOT_FOUND, msg),
-            Self::PermissionDenied(msg) => (StatusCode::FORBIDDEN, msg),
-            Self::Unauthenticated(msg) => (StatusCode::UNAUTHORIZED, msg),
-            Self::DeadlineExceeded(msg) => (StatusCode::GATEWAY_TIMEOUT, msg),
             Self::Internal(msg) => {
                 tracing::error!("Internal error: {msg}");
 
@@ -113,29 +92,11 @@ pub trait MResultExt<T> {
     ///
     /// Returns [`MError::Internal`] if `self` is `Err`.
     fn context(self, msg: &str) -> MResult<T>;
-
-    /// Wraps the error in an [`MError::Internal`] with a lazily-computed context message.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`MError::Internal`] if `self` is `Err`.
-    fn with_context<C, F>(self, f: F) -> MResult<T>
-    where
-        F: FnOnce() -> C,
-        C: Display;
 }
 
 impl<T, E: Display> MResultExt<T> for std::result::Result<T, E> {
     fn context(self, msg: &str) -> MResult<T> {
         self.map_err(|e| MError::internal(format!("{msg}: {e}")))
-    }
-
-    fn with_context<C, F>(self, f: F) -> MResult<T>
-    where
-        F: FnOnce() -> C,
-        C: Display,
-    {
-        self.map_err(|e| MError::internal(format!("{}: {e}", f())))
     }
 }
 
@@ -171,26 +132,14 @@ pub fn bad_request(msg: impl Into<String>) -> MError {
     MError::bad_request(msg)
 }
 
-pub fn already_exists(msg: impl Into<String>) -> MError {
-    MError::conflict(msg)
-}
+// pub fn already_exists(msg: impl Into<String>) -> MError {
+//     MError::conflict(msg)
+// }
 
 pub fn not_found(msg: impl Into<String>) -> MError {
     MError::not_found(msg)
 }
 
-pub fn permission_denied(msg: impl Into<String>) -> MError {
-    MError::permission_denied(msg)
-}
-
-pub fn unauthenticated(msg: impl Into<String>) -> MError {
-    MError::unauthenticated(msg)
-}
-
-pub fn deadline_exceeded(msg: impl Into<String>) -> MError {
-    MError::deadline_exceeded(msg)
-}
-
-pub fn internal(msg: impl Into<String>) -> MError {
-    MError::internal(msg)
-}
+// pub fn internal(msg: impl Into<String>) -> MError {
+//     MError::internal(msg)
+// }
