@@ -54,6 +54,107 @@ async fn get_match_returns_the_match() {
 }
 
 #[tokio::test]
+async fn put_match_updates_the_winner() {
+    let app = TestApp::new().await;
+    let alice = app.create_player("Alice").await;
+    let bob = app.create_player("Bob").await;
+
+    let (status, _) = post_match(&app, json!([[alice, "Cat"], [bob, "Dog"]])).await;
+    assert_eq!(status, StatusCode::OK);
+
+    let id = app.latest_match_id().await;
+    let (status, _) = app
+        .request(
+            Method::PUT,
+            &format!("/match/{id}"),
+            Some(json!({ "winner_id": alice })),
+        )
+        .await;
+    assert_eq!(status, StatusCode::OK);
+
+    let (status, body) = app
+        .request(Method::GET, &format!("/match/{id}"), None)
+        .await;
+
+    assert_eq!(status, StatusCode::OK);
+    assert_eq!(body["winner"]["player"]["id"], alice.to_string());
+}
+
+#[tokio::test]
+async fn put_match_clears_the_winner() {
+    let app = TestApp::new().await;
+    let alice = app.create_player("Alice").await;
+    let bob = app.create_player("Bob").await;
+
+    let (status, _) = post_match(&app, json!([[alice, "Cat"], [bob, "Dog"]])).await;
+    assert_eq!(status, StatusCode::OK);
+
+    let id = app.latest_match_id().await;
+    let (status, _) = app
+        .request(
+            Method::PUT,
+            &format!("/match/{id}"),
+            Some(json!({ "winner_id": alice })),
+        )
+        .await;
+    assert_eq!(status, StatusCode::OK);
+
+    let (status, _) = app
+        .request(
+            Method::PUT,
+            &format!("/match/{id}"),
+            Some(json!({ "winner_id": null })),
+        )
+        .await;
+    assert_eq!(status, StatusCode::OK);
+
+    let (status, body) = app
+        .request(Method::GET, &format!("/match/{id}"), None)
+        .await;
+
+    assert_eq!(status, StatusCode::OK);
+    assert!(body["winner"].is_null());
+}
+
+#[tokio::test]
+async fn put_match_rejects_a_winner_outside_the_match() {
+    let app = TestApp::new().await;
+    let alice = app.create_player("Alice").await;
+    let bob = app.create_player("Bob").await;
+    let carol = app.create_player("Carol").await;
+
+    let (status, _) = post_match(&app, json!([[alice, "Cat"], [bob, "Dog"]])).await;
+    assert_eq!(status, StatusCode::OK);
+
+    let id = app.latest_match_id().await;
+    let (status, _) = app
+        .request(
+            Method::PUT,
+            &format!("/match/{id}"),
+            Some(json!({ "winner_id": carol })),
+        )
+        .await;
+
+    assert_eq!(status, StatusCode::BAD_REQUEST);
+}
+
+#[tokio::test]
+async fn put_match_returns_not_found_for_an_unknown_id() {
+    let app = TestApp::new().await;
+    let id = Uuid::new_v4();
+
+    let (status, _) = app
+        .request(
+            Method::PUT,
+            &format!("/match/{id}"),
+            Some(json!({ "winner_id": null })),
+        )
+        .await;
+
+    assert_eq!(status, StatusCode::NOT_FOUND);
+}
+
+#[tokio::test]
 async fn get_match_returns_not_found_for_an_unknown_id() {
     let app = TestApp::new().await;
     let id = Uuid::new_v4();

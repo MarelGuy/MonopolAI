@@ -19,7 +19,9 @@ pub fn router(state: AppState) -> Router {
         .route("/match", post(r#match::post_match_handler))
         .route(
             "/match/{id}",
-            get(r#match::get_match_handler).delete(r#match::delete_match_handler),
+            get(r#match::get_match_handler)
+                .put(r#match::update_match_handler)
+                .delete(r#match::delete_match_handler),
         )
         .route("/player", post(player::post_player_handler))
         .route(

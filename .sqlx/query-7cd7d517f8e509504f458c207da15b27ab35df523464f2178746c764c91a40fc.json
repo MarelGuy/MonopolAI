@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE matches\nSET winner_id = ?2\nWHERE id = ?1;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "7cd7d517f8e509504f458c207da15b27ab35df523464f2178746c764c91a40fc"
+}

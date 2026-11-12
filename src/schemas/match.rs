@@ -118,6 +118,31 @@ impl Match {
         }))
     }
 
+    pub async fn update(
+        state: &AppState,
+        id: Uuid,
+        winner_id: Option<Uuid>,
+    ) -> MResult<Option<()>> {
+        let Some(game_match) = Self::get(state, id).await? else {
+            return Ok(None);
+        };
+
+        if let Some(winner_id) = winner_id
+            && !game_match
+                .players
+                .iter()
+                .any(|player| player.player.id == winner_id)
+        {
+            return Err(bad_request("Winner is not a player in the match"));
+        }
+
+        sqlx::query_file!("src/queries/update_match.sql", id, winner_id)
+            .execute(&state.pool)
+            .await?;
+
+        Ok(Some(()))
+    }
+
     pub async fn delete(state: &AppState, id: Uuid) -> MResult<Option<()>> {
         let result = sqlx::query_file!("src/queries/delete_match.sql", id)
             .execute(&state.pool)
