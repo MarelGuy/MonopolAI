@@ -45,13 +45,13 @@ impl TestApp {
     ) -> (StatusCode, Value) {
         let mut request = Request::builder().method(method).uri(uri);
 
-        let body = match body {
-            Some(body) => {
-                request = request.header(CONTENT_TYPE, "application/json");
-                Body::from(serde_json::to_vec(&body).unwrap())
-            }
-            None => Body::empty(),
-        };
+        if body.is_some() {
+            request = request.header(CONTENT_TYPE, "application/json");
+        }
+
+        let body = body.map_or_else(Body::empty, |body| {
+            Body::from(serde_json::to_vec(&body).unwrap())
+        });
 
         let response = self
             .router
