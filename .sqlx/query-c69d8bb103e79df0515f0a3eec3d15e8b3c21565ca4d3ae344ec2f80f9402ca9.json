@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM matches\nWHERE id = ?1;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "c69d8bb103e79df0515f0a3eec3d15e8b3c21565ca4d3ae344ec2f80f9402ca9"
+}

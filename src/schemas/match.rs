@@ -111,6 +111,14 @@ impl Match {
         }))
     }
 
+    pub async fn delete(state: &AppState, id: Uuid) -> MResult<Option<()>> {
+        let result = sqlx::query_file!("src/queries/delete_match.sql", id)
+            .execute(&state.pool)
+            .await?;
+
+        Ok((result.rows_affected() > 0).then_some(()))
+    }
+
     fn space_at(edition: &Edition, position: u32) -> MResult<Space> {
         edition
             .spaces
