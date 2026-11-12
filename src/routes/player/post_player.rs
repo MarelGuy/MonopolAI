@@ -1,11 +1,13 @@
 use axum::{Json, extract::State};
 
-use crate::{appstate::AppState, merror::MError, requests::player::PostPlayerReq, schemas::Player};
+use crate::{
+    appstate::AppState, merror::MResult, requests::player::PostPlayerReq, schemas::Player,
+};
 
 pub async fn post_player_handler(
     State(state): State<AppState>,
     Json(req): Json<PostPlayerReq>,
-) -> Result<Json<()>, MError> {
+) -> MResult<Json<()>> {
     let player = Player::new(req.name);
 
     player.insert(&state.pool).await?;

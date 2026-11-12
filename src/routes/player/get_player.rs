@@ -6,14 +6,14 @@ use uuid::Uuid;
 
 use crate::{
     appstate::AppState,
-    merror::{MError, not_found},
+    merror::{MResult, not_found},
     schemas::Player,
 };
 
 pub async fn get_player_handler(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
-) -> Result<Json<Player>, MError> {
+) -> MResult<Json<Player>> {
     let Some(player) = Player::get(&state.pool, id).await? else {
         return Err(not_found("Player not found"));
     };
