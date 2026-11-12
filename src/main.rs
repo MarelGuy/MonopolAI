@@ -13,7 +13,7 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 use crate::{
     appstate::AppState,
     merror::{MError, MResultExt},
-    routes::{health_handler, post_match_handler, post_player_handler},
+    routes::{health_handler, r#match::post_match_handler, player::post_player_handler},
 };
 
 mod appstate;
