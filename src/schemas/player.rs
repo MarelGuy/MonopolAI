@@ -1,9 +1,10 @@
+use serde::Serialize;
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
-use crate::merror::MResult;
+use crate::{appstate::AppState, merror::MResult};
 
-#[derive(sqlx::FromRow)]
+#[derive(sqlx::FromRow, Serialize)]
 pub struct Player {
     pub id: Uuid,
     pub name: String,
@@ -42,6 +43,14 @@ impl Player {
             name: row.name,
             wins: row.wins as usize,
         }))
+    }
+
+    pub async fn delete(state: &AppState, id: Uuid) -> MResult<Option<()>> {
+        let result = sqlx::query_file!("src/queries/delete_player.sql", id)
+            .execute(&state.pool)
+            .await?;
+
+        Ok((result.rows_affected() > 0).then_some(()))
     }
 }
 
