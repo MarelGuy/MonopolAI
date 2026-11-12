@@ -1,10 +1,6 @@
 use std::net::SocketAddr;
 
-use axum::{
-    Router,
-    http::HeaderValue,
-    routing::{get, post},
-};
+use axum::http::HeaderValue;
 use clap::Parser;
 use merror::MResult;
 use sqlx::sqlite::SqlitePoolOptions;
@@ -13,11 +9,7 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 use crate::{
     appstate::AppState,
     merror::{MError, MResultExt},
-    routes::{
-        health_handler,
-        r#match::{delete_match_handler, get_match_handler, post_match_handler},
-        player::{delete_player_handler, get_player_handler, post_player_handler},
-    },
+    routes::router,
 };
 
 mod appstate;
@@ -86,20 +78,7 @@ async fn main() -> MResult<()> {
         cors_layer(&allowed_origins)
     };
 
-    let app = Router::new()
-        .route("/match", post(post_match_handler))
-        .route(
-            "/match/{id}",
-            get(get_match_handler).delete(delete_match_handler),
-        )
-        .route("/player", post(post_player_handler))
-        .route(
-            "/player/{id}",
-            get(get_player_handler).delete(delete_player_handler),
-        )
-        .route("/health", get(health_handler))
-        .with_state(state)
-        .layer(app_cors_layer);
+    let app = router(state).layer(app_cors_layer);
 
     let addr: SocketAddr = format!("{}:{}", args.host, args.port)
         .parse()
