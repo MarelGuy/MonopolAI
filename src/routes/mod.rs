@@ -24,7 +24,9 @@ pub fn router(state: AppState) -> Router {
         .route("/player", post(player::post_player_handler))
         .route(
             "/player/{id}",
-            get(player::get_player_handler).delete(player::delete_player_handler),
+            get(player::get_player_handler)
+                .put(player::update_player_handler)
+                .delete(player::delete_player_handler),
         )
         .route("/health", get(health_handler))
         .with_state(state)

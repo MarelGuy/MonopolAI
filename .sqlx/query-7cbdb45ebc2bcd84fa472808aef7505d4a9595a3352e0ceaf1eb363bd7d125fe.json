@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE players\nSET name = ?2,\n    wins = ?3\nWHERE id = ?1;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "7cbdb45ebc2bcd84fa472808aef7505d4a9595a3352e0ceaf1eb363bd7d125fe"
+}

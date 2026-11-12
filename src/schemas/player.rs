@@ -24,21 +24,56 @@ impl Player {
     }
 
     pub async fn insert(&self, pool: &SqlitePool) -> MResult<()> {
-        let result = sqlx::query_file!(
+        sqlx::query_file!(
             "src/queries/insert_player.sql",
             self.id,
             self.name,
             u32::try_from(self.wins)?
         )
         .execute(pool)
-        .await;
+        .await
+        .map_err(Self::unique_name_error)?;
 
-        match result {
-            Ok(_) => Ok(()),
-            Err(sqlx::Error::Database(error)) if error.is_unique_violation() => {
-                Err(MError::conflict("A player with this name already exists"))
+        Ok(())
+    }
+
+    pub async fn update(
+        state: &AppState,
+        id: Uuid,
+        name: Option<String>,
+        wins: Option<usize>,
+    ) -> MResult<Option<Self>> {
+        let Some(mut player) = Self::get(&state.pool, id).await? else {
+            return Ok(None);
+        };
+
+        if let Some(name) = name {
+            player.name = name;
+        }
+
+        if let Some(wins) = wins {
+            player.wins = wins;
+        }
+
+        sqlx::query_file!(
+            "src/queries/update_player.sql",
+            player.id,
+            &player.name,
+            u32::try_from(player.wins)?
+        )
+        .execute(&state.pool)
+        .await
+        .map_err(Self::unique_name_error)?;
+
+        Ok(Some(player))
+    }
+
+    fn unique_name_error(error: sqlx::Error) -> MError {
+        match error {
+            sqlx::Error::Database(error) if error.is_unique_violation() => {
+                MError::conflict("A player with this name already exists")
             }
-            Err(error) => Err(error.into()),
+            error => error.into(),
         }
     }
 
