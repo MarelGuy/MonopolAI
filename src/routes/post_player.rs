@@ -1,6 +1,6 @@
 use axum::{Json, extract::State};
 
-use crate::{appstate::AppState, merror::MError, requests::PostPlayerReq, schemas::Player};
+use crate::{appstate::AppState, merror::MError, requests::player::PostPlayerReq, schemas::Player};
 
 pub async fn post_player_handler(
     State(state): State<AppState>,

@@ -1,6 +1,6 @@
 use axum::{Json, extract::State};
 
-use crate::{appstate::AppState, merror::MError, requests::PostMatchReq, schemas::Match};
+use crate::{appstate::AppState, merror::MError, requests::r#match::PostMatchReq, schemas::Match};
 
 pub async fn post_match_handler(
     State(state): State<AppState>,
