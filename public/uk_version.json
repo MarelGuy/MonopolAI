@@ -11,7 +11,21 @@
             "color": "Brown",
             "s_type": "Property",
             "cost": 60,
-            "name": "Old Kent Road"
+            "name": "Old Kent Road",
+            "rent": {
+                "base": 2,
+                "houses": [
+                    10,
+                    30,
+                    90,
+                    160,
+                    250
+                ],
+                "mortgage": 30,
+                "build_cost": 50,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -23,7 +37,21 @@
             "color": "Brown",
             "s_type": "Property",
             "cost": 60,
-            "name": "Whiechapel Road"
+            "name": "Whitechapel Road",
+            "rent": {
+                "base": 4,
+                "houses": [
+                    20,
+                    60,
+                    180,
+                    320,
+                    450
+                ],
+                "mortgage": 30,
+                "build_cost": 50,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -35,13 +63,35 @@
             "color": null,
             "s_type": "TrainStation",
             "cost": 200,
-            "name": "Kings Cross Station"
+            "name": "Kings Cross Station",
+            "rent": {
+                "base": 25,
+                "houses": null,
+                "mortgage": 100,
+                "build_cost": null,
+                "dice_multiplier": false,
+                "train_station": true
+            }
         },
         {
             "color": "Blue",
             "s_type": "Property",
             "cost": 100,
-            "name": "The Angel Islington"
+            "name": "The Angel Islington",
+            "rent": {
+                "base": 6,
+                "houses": [
+                    30,
+                    90,
+                    270,
+                    400,
+                    550
+                ],
+                "mortgage": 50,
+                "build_cost": 50,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -53,13 +103,41 @@
             "color": "Blue",
             "s_type": "Property",
             "cost": 100,
-            "name": "Euston Road"
+            "name": "Euston Road",
+            "rent": {
+                "base": 6,
+                "houses": [
+                    30,
+                    90,
+                    270,
+                    400,
+                    550
+                ],
+                "mortgage": 50,
+                "build_cost": 50,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": "Blue",
             "s_type": "Property",
             "cost": 120,
-            "name": "Pentonville Road"
+            "name": "Pentonville Road",
+            "rent": {
+                "base": 8,
+                "houses": [
+                    40,
+                    100,
+                    300,
+                    450,
+                    600
+                ],
+                "mortgage": 60,
+                "build_cost": 50,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -71,37 +149,109 @@
             "color": "DarkRed",
             "s_type": "Property",
             "cost": 140,
-            "name": "Pall Mall"
+            "name": "Pall Mall",
+            "rent": {
+                "base": 10,
+                "houses": [
+                    50,
+                    150,
+                    450,
+                    625,
+                    750
+                ],
+                "mortgage": 70,
+                "build_cost": 100,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
             "s_type": "ElectricCompany",
             "cost": 150,
-            "name": "Electric Company"
+            "name": "Electric Company",
+            "rent": {
+                "base": 4,
+                "houses": null,
+                "mortgage": 75,
+                "build_cost": null,
+                "dice_multiplier": true,
+                "train_station": false
+            }
         },
         {
             "color": "DarkRed",
             "s_type": "Property",
             "cost": 140,
-            "name": "Whitehall"
+            "name": "Whitehall",
+            "rent": {
+                "base": 10,
+                "houses": [
+                    50,
+                    150,
+                    450,
+                    625,
+                    750
+                ],
+                "mortgage": 70,
+                "build_cost": 100,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": "DarkRed",
             "s_type": "Property",
             "cost": 160,
-            "name": "Northumber Land Avenue"
+            "name": "Northumberland Avenue",
+            "rent": {
+                "base": 12,
+                "houses": [
+                    60,
+                    180,
+                    500,
+                    700,
+                    900
+                ],
+                "mortgage": 80,
+                "build_cost": 100,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
             "s_type": "TrainStation",
             "cost": 200,
-            "name": "Marylebone Station"
+            "name": "Marylebone Station",
+            "rent": {
+                "base": 25,
+                "houses": null,
+                "mortgage": 100,
+                "build_cost": null,
+                "dice_multiplier": false,
+                "train_station": true
+            }
         },
         {
             "color": "Orange",
             "s_type": "Property",
             "cost": 180,
-            "name": "Bow Street"
+            "name": "Bow Street",
+            "rent": {
+                "base": 14,
+                "houses": [
+                    70,
+                    200,
+                    550,
+                    750,
+                    950
+                ],
+                "mortgage": 90,
+                "build_cost": 100,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -113,13 +263,41 @@
             "color": "Orange",
             "s_type": "Property",
             "cost": 180,
-            "name": "Marlborough Street"
+            "name": "Marlborough Street",
+            "rent": {
+                "base": 14,
+                "houses": [
+                    70,
+                    200,
+                    550,
+                    750,
+                    950
+                ],
+                "mortgage": 90,
+                "build_cost": 100,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": "Orange",
             "s_type": "Property",
             "cost": 200,
-            "name": "Vine Street"
+            "name": "Vine Street",
+            "rent": {
+                "base": 16,
+                "houses": [
+                    80,
+                    220,
+                    600,
+                    800,
+                    1000
+                ],
+                "mortgage": 100,
+                "build_cost": 100,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -131,7 +309,21 @@
             "color": "LightRed",
             "s_type": "Property",
             "cost": 220,
-            "name": "Strand"
+            "name": "The Strand",
+            "rent": {
+                "base": 18,
+                "houses": [
+                    90,
+                    250,
+                    700,
+                    875,
+                    1050
+                ],
+                "mortgage": 110,
+                "build_cost": 150,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -143,43 +335,129 @@
             "color": "LightRed",
             "s_type": "Property",
             "cost": 220,
-            "name": "Fleet Street"
+            "name": "Fleet Street",
+            "rent": {
+                "base": 18,
+                "houses": [
+                    90,
+                    250,
+                    700,
+                    875,
+                    1050
+                ],
+                "mortgage": 110,
+                "build_cost": 150,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": "LightRed",
             "s_type": "Property",
             "cost": 240,
-            "name": "Trafalgar Sqare"
+            "name": "Trafalgar Square",
+            "rent": {
+                "base": 20,
+                "houses": [
+                    100,
+                    300,
+                    750,
+                    925,
+                    1100
+                ],
+                "mortgage": 120,
+                "build_cost": 150,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
             "s_type": "TrainStation",
             "cost": 200,
-            "name": "Fenchurch Station"
+            "name": "Fenchurch St Station",
+            "rent": {
+                "base": 25,
+                "houses": null,
+                "mortgage": 100,
+                "build_cost": null,
+                "dice_multiplier": false,
+                "train_station": true
+            }
         },
         {
             "color": "Yellow",
             "s_type": "Property",
             "cost": 260,
-            "name": "Leicester Square"
+            "name": "Leicester Square",
+            "rent": {
+                "base": 22,
+                "houses": [
+                    110,
+                    330,
+                    800,
+                    975,
+                    1150
+                ],
+                "mortgage": 130,
+                "build_cost": 150,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": "Yellow",
             "s_type": "Property",
             "cost": 260,
-            "name": "Coventry Square"
+            "name": "Coventry Street",
+            "rent": {
+                "base": 22,
+                "houses": [
+                    110,
+                    330,
+                    800,
+                    975,
+                    1150
+                ],
+                "mortgage": 130,
+                "build_cost": 150,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
             "s_type": "WaterWorks",
             "cost": 150,
-            "name": "Water Works"
+            "name": "Water Works",
+            "rent": {
+                "base": 4,
+                "houses": null,
+                "mortgage": 75,
+                "build_cost": null,
+                "dice_multiplier": true,
+                "train_station": false
+            }
         },
         {
             "color": "Yellow",
             "s_type": "Property",
             "cost": 280,
-            "name": "Piccadilly"
+            "name": "Piccadilly",
+            "rent": {
+                "base": 22,
+                "houses": [
+                    120,
+                    360,
+                    850,
+                    1025,
+                    1200
+                ],
+                "mortgage": 140,
+                "build_cost": 150,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -191,13 +469,41 @@
             "color": "Green",
             "s_type": "Property",
             "cost": 300,
-            "name": "Regent Street"
+            "name": "Regent Street",
+            "rent": {
+                "base": 26,
+                "houses": [
+                    130,
+                    390,
+                    900,
+                    1100,
+                    1275
+                ],
+                "mortgage": 150,
+                "build_cost": 200,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": "Green",
             "s_type": "Property",
             "cost": 300,
-            "name": "Oxford Street"
+            "name": "Oxford Street",
+            "rent": {
+                "base": 26,
+                "houses": [
+                    130,
+                    390,
+                    900,
+                    1100,
+                    1275
+                ],
+                "mortgage": 150,
+                "build_cost": 200,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -209,13 +515,35 @@
             "color": "Green",
             "s_type": "Property",
             "cost": 320,
-            "name": "Bond Street"
+            "name": "Bond Street",
+            "rent": {
+                "base": 28,
+                "houses": [
+                    150,
+                    450,
+                    1000,
+                    1200,
+                    1400
+                ],
+                "mortgage": 160,
+                "build_cost": 200,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
             "s_type": "TrainStation",
             "cost": 200,
-            "name": "Liverpool St. Station"
+            "name": "Liverpool Street Station",
+            "rent": {
+                "base": 25,
+                "houses": null,
+                "mortgage": 100,
+                "build_cost": null,
+                "dice_multiplier": false,
+                "train_station": true
+            }
         },
         {
             "color": null,
@@ -227,7 +555,21 @@
             "color": "DarkBlue",
             "s_type": "Property",
             "cost": 350,
-            "name": "Park Lane"
+            "name": "Park Lane",
+            "rent": {
+                "base": 35,
+                "houses": [
+                    175,
+                    500,
+                    1100,
+                    1300,
+                    1500
+                ],
+                "mortgage": 175,
+                "build_cost": 200,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         },
         {
             "color": null,
@@ -239,43 +581,183 @@
             "color": "DarkBlue",
             "s_type": "Property",
             "cost": 400,
-            "name": "Mayfair"
+            "name": "Mayfair",
+            "rent": {
+                "base": 50,
+                "houses": [
+                    200,
+                    600,
+                    1400,
+                    1700,
+                    2000
+                ],
+                "mortgage": 200,
+                "build_cost": 200,
+                "dice_multiplier": false,
+                "train_station": false
+            }
         }
     ],
-    "chance_cards": [
-        "Advance to \"Go\". Collect £200",
-        "Advance to Trafalgar Square. If you pass “Go”, collect £200",
-        "Advance to Mayfair",
-        "Advance to Pall Mall. If you pass “Go”, collect £200",
-        "Get Out of Jail Free. This card may be kept until needed or traded.",
-        "Bank pays you Dividend of £50",
-        "Go Back 3 Spaces",
-        "Go to Jail. Go directly to Jail, do not pass Go, do not collect £200",
-        "Make general repairs on all your property: For each house pay £25, for each hotel pay £100",
-        "Advance to the nearest utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner 10 times the amount thrown.",
-        "Advance to the nearest station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled.",
-        "Advance to the nearest station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled.",
-        "Speeding fine £15",
-        "Take a trip to Kings Cross Station. If you pass Go, collect £200",
-        "Your building loan matures. Collect £150",
-        "You have been elected Chairman of the Board. Pay each player £50"
-    ],
-    "community_chest_cards": [
-        "Advance to \"Go\". Collect £200",
-        "Bank error in your favour. Collect £200",
-        "Doctor's fees. Pay £50",
-        "From sale of stock you get £50",
-        "Get Out of Jail Free. This card may be kept until needed or traded.",
-        "Go to Jail. Go directly to Jail, do not pass Go, do not collect £200",
-        "Holiday fund matures. Receive £100",
-        "Income tax refund. Collect £20",
-        "It is your birthday. Collect £10 from every player",
-        "Life insurance matures. Collect £100",
-        "Hospital fees. Pay £100",
-        "School fees. Pay £50",
-        "Receive £25 consultancy fee",
-        "You are assessed for street repairs: Pay £40 per house and £115 per hotel you own",
-        "You have won second prize in a beauty contest. Collect £10",
-        "You inherit £100"
+    "cards": [
+        {
+            "content": "Advance to \"Go\". Collect £200",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to Trafalgar Square. If you pass “Go”, collect £200",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to Mayfair",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to Pall Mall. If you pass “Go”, collect £200",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Get Out of Jail Free. This card may be kept until needed or traded.",
+            "is_chance": true,
+            "is_jail": true
+        },
+        {
+            "content": "Bank pays you Dividend of £50",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Go Back 3 Spaces",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Go to Jail. Go directly to Jail, do not pass Go, do not collect £200",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Make general repairs on all your property: For each house pay £25, for each hotel pay £100",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to the nearest utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner 10 times the amount thrown.",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to the nearest station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled.",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to the nearest station. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled.",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Speeding fine £15",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Take a trip to Kings Cross Station. If you pass Go, collect £200",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Your building loan matures. Collect £150",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "You have been elected Chairman of the Board. Pay each player £50",
+            "is_chance": true,
+            "is_jail": false
+        },
+        {
+            "content": "Advance to \"Go\". Collect £200",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Bank error in your favour. Collect £200",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Doctor's fees. Pay £50",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "From sale of stock you get £50",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Get Out of Jail Free. This card may be kept until needed or traded.",
+            "is_chance": false,
+            "is_jail": true
+        },
+        {
+            "content": "Go to Jail. Go directly to Jail, do not pass Go, do not collect £200",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Holiday fund matures. Receive £100",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Income tax refund. Collect £20",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "It is your birthday. Collect £10 from every player",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Life insurance matures. Collect £100",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Hospital fees. Pay £100",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "School fees. Pay £50",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "Receive £25 consultancy fee",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "You are assessed for street repairs: Pay £40 per house and £115 per hotel you own",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "You have won second prize in a beauty contest. Collect £10",
+            "is_chance": false,
+            "is_jail": false
+        },
+        {
+            "content": "You inherit £100",
+            "is_chance": false,
+            "is_jail": false
+        }
     ]
 }

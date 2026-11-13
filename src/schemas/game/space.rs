@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::enums::{SpaceColor, SpaceType};
+use crate::{
+    enums::{SpaceColor, SpaceType},
+    schemas::game::Rent,
+};
 
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq)]
 pub struct Space {
@@ -8,6 +11,7 @@ pub struct Space {
     s_type: SpaceType,
     cost: Option<u16>,
     name: Option<String>,
+    rent: Option<Rent>,
 }
 
 impl Default for Space {
@@ -17,6 +21,7 @@ impl Default for Space {
             s_type: SpaceType::Start,
             cost: None,
             name: None,
+            rent: None,
         }
     }
 }
