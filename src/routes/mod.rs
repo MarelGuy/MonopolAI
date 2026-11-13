@@ -6,6 +6,7 @@ use axum::{
 use crate::appstate::AppState;
 
 mod health;
+pub mod llm;
 pub mod r#match;
 pub mod player;
 
@@ -31,5 +32,8 @@ pub fn router(state: AppState) -> Router {
                 .delete(player::delete_player_handler),
         )
         .route("/health", get(health_handler))
+        .route("/llm/stream", post(llm::chat_stream_handler))
+        // Compatibility alias with the reference chat service.
+        .route("/chat/stream", post(llm::chat_stream_handler))
         .with_state(state)
 }
