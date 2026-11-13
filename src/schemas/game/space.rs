@@ -25,3 +25,25 @@ impl Default for Space {
         }
     }
 }
+
+impl Space {
+    #[must_use]
+    pub fn name(&self) -> Option<&str> {
+        self.name.as_deref()
+    }
+
+    #[must_use]
+    pub const fn space_type(&self) -> &SpaceType {
+        &self.s_type
+    }
+
+    #[must_use]
+    pub const fn cost(&self) -> Option<u16> {
+        self.cost
+    }
+
+    #[must_use]
+    pub const fn color(&self) -> Option<&SpaceColor> {
+        self.color.as_ref()
+    }
+}
