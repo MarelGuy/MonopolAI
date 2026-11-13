@@ -76,6 +76,15 @@ pub struct Args {
     )]
     pub game_edition: String,
 
+    /// SQLite file to use as database
+    #[arg(
+        long,
+        env = "SQLITE_FILE",
+        default_value = "monopolai.db",
+        help_heading = "Database"
+    )]
+    pub sqlite_file: String,
+
     /// Comma-separated list of allowed CORS origins
     #[arg(long, env, default_value = "*", help_heading = "Security")]
     pub allowed_origins: String,

@@ -11,6 +11,7 @@ use crate::{
     cors::cors_layer,
     merror::{MError, MResultExt},
     routes::router,
+    schemas::game::Edition,
 };
 
 mod appstate;
@@ -34,10 +35,14 @@ async fn main() -> MResult<()> {
         )
         .init();
 
+    let url = format!("file:{}?mode=rwc", args.sqlite_file);
+
     let pool = SqlitePoolOptions::new()
-        .connect("file:monopolai.db?mode=rwc")
+        .connect(&url)
         .await
         .map_err(|e| MError::internal(e.to_string()))?;
+
+    tracing::info!("SQLite pool connected on {}", url);
 
     sqlx::migrate!("./migrations")
         .run(&pool)
@@ -46,7 +51,15 @@ async fn main() -> MResult<()> {
 
     let file = tokio::fs::read_to_string(args.game_edition.as_str()).await?;
 
-    let edition = serde_json::from_str(&file)?;
+    let edition: Edition = serde_json::from_str(&file)?;
+
+    tracing::info!(
+        "Loaded version: {} of edition: {} with {} spaces and {} cards",
+        edition.version,
+        edition.name,
+        edition.spaces.len(),
+        edition.cards.len()
+    );
 
     let state = AppState { pool, edition };
 
