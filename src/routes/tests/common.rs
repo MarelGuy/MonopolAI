@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use axum::{
     Router,
     body::{Body, to_bytes},
@@ -8,7 +10,7 @@ use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
 use tower::ServiceExt;
 use uuid::Uuid;
 
-use crate::{appstate::AppState, routes::router, schemas::game::Edition};
+use crate::{appstate::AppState, llm::ChatProvider, routes::router, schemas::game::Edition};
 
 pub struct TestApp {
     pub router: Router,
@@ -17,6 +19,14 @@ pub struct TestApp {
 
 impl TestApp {
     pub async fn new() -> Self {
+        Self::build(None).await
+    }
+
+    pub async fn new_with_llm(llm: Arc<dyn ChatProvider>) -> Self {
+        Self::build(Some(llm)).await
+    }
+
+    async fn build(llm: Option<Arc<dyn ChatProvider>>) -> Self {
         let pool = SqlitePoolOptions::new()
             .max_connections(1)
             .connect("sqlite::memory:")
@@ -32,6 +42,7 @@ impl TestApp {
             router: router(AppState {
                 pool: pool.clone(),
                 edition,
+                llm,
             }),
             pool,
         }

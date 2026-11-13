@@ -6,6 +6,8 @@ use clap::{
     },
 };
 
+use crate::llm::LlmApiType;
+
 #[derive(Parser, Debug)]
 #[command(
     name = "MonopolAI Server",
@@ -37,35 +39,35 @@ pub struct Args {
     )]
     pub log_level: String,
 
-    // /// Base URL of the remote OpenAI-compatible LLM API (e.g. Alibaba Cloud
-    // /// Model Studio). Defaults to `OpenCode` Go when only the key is set.
-    // #[arg(
-    //     long,
-    //     env = "LLM_API_URL",
-    //     required = true,
-    //     help_heading = "LLM Service"
-    // )]
-    // pub llm_api_url: Option<String>,
+    /// Wire protocol of the remote LLM API.
+    ///
+    /// `anthropic` (Messages API) is recommended for best performance.
+    /// `openai-responses` (Responses API) is supported; `openai-chat`
+    /// (classic Chat Completions) is kept for compatibility and logs an
+    /// advisory to prefer Anthropic or Responses.
+    #[arg(
+        long,
+        env = "LLM_API_TYPE",
+        value_enum,
+        default_value = "anthropic",
+        help_heading = "LLM Service"
+    )]
+    pub llm_api_type: LlmApiType,
 
-    // /// API key for the remote LLM API: when set, chat generation uses the
-    // /// remote endpoint instead of the local llama-server
-    // #[arg(
-    //     long,
-    //     env = "LLM_API_KEY",
-    //     required = true,
-    //     help_heading = "LLM Service"
-    // )]
-    // pub llm_api_key: Option<String>,
+    /// Base URL of the remote LLM API. Defaults to the provider's public host:
+    /// `https://api.anthropic.com` for Anthropic and `https://api.openai.com`
+    /// for the `OpenAI` API types.
+    #[arg(long, env = "LLM_API_URL", help_heading = "LLM Service")]
+    pub llm_api_url: Option<String>,
 
-    // /// Model ID sent to the remote LLM API (e.g. deepseek-v4.1-flash).
-    // /// Used as the default for all tiers when a tier-specific model is unset.
-    // #[arg(
-    //     long,
-    //     env = "LLM_API_MODEL",
-    //     required = true,
-    //     help_heading = "LLM Service"
-    // )]
-    // pub llm_api_model: String,
+    /// API key for the remote LLM API.
+    #[arg(long, env = "LLM_API_KEY", help_heading = "LLM Service")]
+    pub llm_api_key: Option<String>,
+
+    /// Model ID sent to the remote LLM API.
+    #[arg(long, env = "LLM_API_MODEL", help_heading = "LLM Service")]
+    pub llm_api_model: String,
+
     /// Edition of the game you want to play, if not supported by default, you can also import a file
     /// Currently available editions: UK edition
     #[arg(

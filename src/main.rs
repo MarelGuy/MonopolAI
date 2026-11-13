@@ -1,4 +1,5 @@
 use std::net::SocketAddr;
+use std::sync::Arc;
 
 use axum::http::HeaderValue;
 use clap::Parser;
@@ -9,6 +10,7 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 use crate::{
     appstate::AppState,
     cors::cors_layer,
+    llm::{ChatProvider, LlmClient},
     merror::{MError, MResultExt},
     routes::router,
     schemas::game::Edition,
@@ -18,10 +20,12 @@ mod appstate;
 mod cli;
 mod cors;
 mod enums;
+mod llm;
 mod merror;
 mod requests;
 mod routes;
 mod schemas;
+mod tools;
 
 #[tokio::main]
 async fn main() -> MResult<()> {
@@ -61,7 +65,33 @@ async fn main() -> MResult<()> {
         edition.cards.len()
     );
 
-    let state = AppState { pool, edition };
+    if let Some(advice) = args.llm_api_type.advice() {
+        tracing::warn!("{advice}");
+    }
+
+    let llm_base_url = args
+        .llm_api_url
+        .clone()
+        .unwrap_or_else(|| args.llm_api_type.default_base_url().to_string());
+    tracing::info!(
+        "LLM API type: {} · model: {} · endpoint: {}",
+        args.llm_api_type,
+        args.llm_api_model,
+        llm_base_url
+    );
+
+    let llm: Arc<dyn ChatProvider> = Arc::new(LlmClient::new(
+        args.llm_api_type,
+        llm_base_url,
+        args.llm_api_key.clone(),
+        args.llm_api_model.clone(),
+    ));
+
+    let state = AppState {
+        pool,
+        edition,
+        llm: Some(llm),
+    };
 
     let app_cors_layer = if &args.allowed_origins == "*" {
         CorsLayer::new().allow_origin(AllowOrigin::any())
