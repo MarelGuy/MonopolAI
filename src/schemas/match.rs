@@ -24,12 +24,23 @@ pub struct Match {
 
 impl Match {
     pub async fn new(players: Vec<(Uuid, Piece)>, state: &AppState) -> MResult<Self> {
+        if players.len() < 2 {
+            return Err(bad_request("A match requires at least two players"));
+        }
+
         let mut match_players: Vec<MatchPlayer> = vec![];
         let mut player_ids = HashSet::new();
+        let mut pieces = HashSet::new();
 
         for (player_id, piece) in players {
             if !player_ids.insert(player_id) {
                 return Err(bad_request("A player cannot join the same match twice"));
+            }
+
+            if !pieces.insert(piece.clone()) {
+                return Err(bad_request(
+                    "A piece cannot be used by more than one player",
+                ));
             }
 
             if let Some(player) = Player::get(&state.pool, player_id).await? {

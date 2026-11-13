@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(sqlx::Type, Debug, Deserialize, Serialize, Clone)]
+#[derive(sqlx::Type, Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[sqlx(rename_all = "PascalCase")]
 pub enum Piece {
     Cat,

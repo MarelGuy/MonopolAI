@@ -72,15 +72,6 @@ impl IntoResponse for MError {
             }
         };
 
-        // Most errors carry a plain-text message; some (per-plan token limits,
-        // model_not_allowed) pass a JSON object so clients can read structured
-        // fields (`code`, `remaining_tokens`). Return it as-is when parseable.
-        if let Ok(value) = serde_json::from_str::<serde_json::Value>(&message)
-            && value.is_object()
-        {
-            return (status, Json(value)).into_response();
-        }
-
         (status, Json(serde_json::json!({ "error": message }))).into_response()
     }
 }
@@ -143,3 +134,84 @@ pub fn not_found(msg: impl Into<String>) -> MError {
 // pub fn internal(msg: impl Into<String>) -> MError {
 //     MError::internal(msg)
 // }
+
+#[cfg(test)]
+mod tests {
+    use axum::{body::to_bytes, http::StatusCode, response::IntoResponse};
+    use serde_json::{Value, json};
+
+    use super::{MError, MResult, MResultExt};
+
+    async fn response_parts(error: MError) -> (StatusCode, Value) {
+        let response = error.into_response();
+        let status = response.status();
+        let bytes = to_bytes(response.into_body(), usize::MAX).await.unwrap();
+
+        (status, serde_json::from_slice(&bytes).unwrap())
+    }
+
+    #[tokio::test]
+    async fn maps_client_errors_to_statuses_and_json_messages() {
+        let cases = [
+            (
+                MError::bad_request("bad input"),
+                StatusCode::BAD_REQUEST,
+                "bad input",
+            ),
+            (
+                MError::conflict("already exists"),
+                StatusCode::CONFLICT,
+                "already exists",
+            ),
+            (
+                MError::not_found("missing"),
+                StatusCode::NOT_FOUND,
+                "missing",
+            ),
+        ];
+
+        for (error, expected_status, expected_message) in cases {
+            let (status, body) = response_parts(error).await;
+            assert_eq!(status, expected_status);
+            assert_eq!(body, json!({ "error": expected_message }));
+        }
+    }
+
+    #[tokio::test]
+    async fn hides_internal_error_details() {
+        let (status, body) = response_parts(MError::internal("secret database details")).await;
+
+        assert_eq!(status, StatusCode::INTERNAL_SERVER_ERROR);
+        assert_eq!(body, json!({ "error": "Internal server error" }));
+        assert!(!body.to_string().contains("secret database details"));
+    }
+
+    #[test]
+    fn display_includes_the_error_kind() {
+        assert_eq!(MError::bad_request("bad").to_string(), "Bad request: bad");
+        assert_eq!(
+            MError::conflict("duplicate").to_string(),
+            "Conflict: duplicate"
+        );
+        assert_eq!(
+            MError::not_found("missing").to_string(),
+            "Not found: missing"
+        );
+        assert_eq!(
+            MError::internal("broken").to_string(),
+            "Internal error: broken"
+        );
+    }
+
+    #[test]
+    fn context_wraps_errors_and_passes_through_successes() {
+        let error: MResult<()> = Err::<(), _>("boom").context("while loading");
+        match error {
+            Err(MError::Internal(message)) => assert_eq!(message, "while loading: boom"),
+            _ => panic!("expected an internal error"),
+        }
+
+        let success: MResult<u8> = Ok::<_, &str>(1).context("while loading");
+        assert_eq!(success.unwrap(), 1);
+    }
+}

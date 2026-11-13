@@ -71,6 +71,32 @@ impl TestApp {
         (status, body)
     }
 
+    pub async fn raw_request(
+        &self,
+        method: Method,
+        uri: &str,
+        content_type: Option<&str>,
+        body: &str,
+    ) -> (StatusCode, String) {
+        let mut request = Request::builder().method(method).uri(uri);
+
+        if let Some(content_type) = content_type {
+            request = request.header(CONTENT_TYPE, content_type);
+        }
+
+        let response = self
+            .router
+            .clone()
+            .oneshot(request.body(Body::from(body.to_owned())).unwrap())
+            .await
+            .unwrap();
+
+        let status = response.status();
+        let bytes = to_bytes(response.into_body(), usize::MAX).await.unwrap();
+
+        (status, String::from_utf8_lossy(&bytes).into_owned())
+    }
+
     pub async fn create_player(&self, name: &str) -> Uuid {
         let (status, _) = self
             .request(Method::POST, "/player", Some(json!({ "name": name })))
@@ -107,5 +133,55 @@ impl TestApp {
             .fetch_one(&self.pool)
             .await
             .unwrap()
+    }
+
+    pub async fn match_player_count(&self, match_id: Uuid) -> i64 {
+        sqlx::query_scalar("SELECT COUNT(*) FROM match_players WHERE match_id = ?1")
+            .bind(match_id)
+            .fetch_one(&self.pool)
+            .await
+            .unwrap()
+    }
+
+    pub async fn match_winner_id(&self, match_id: Uuid) -> Option<Uuid> {
+        sqlx::query_scalar("SELECT winner_id FROM matches WHERE id = ?1")
+            .bind(match_id)
+            .fetch_one(&self.pool)
+            .await
+            .unwrap()
+    }
+
+    pub async fn set_match_version(&self, match_id: Uuid, version: &str) {
+        sqlx::query("UPDATE matches SET version = ?2 WHERE id = ?1")
+            .bind(match_id)
+            .bind(version)
+            .execute(&self.pool)
+            .await
+            .unwrap();
+    }
+
+    pub async fn insert_turn(
+        &self,
+        match_id: Uuid,
+        player_id: Uuid,
+        dice_result: u8,
+        action: &str,
+    ) -> Uuid {
+        let id = Uuid::new_v4();
+
+        sqlx::query(
+            "INSERT INTO turns (id, match_id, player_id, dice_result, action)
+             VALUES (?1, ?2, ?3, ?4, ?5)",
+        )
+        .bind(id)
+        .bind(match_id)
+        .bind(player_id)
+        .bind(i64::from(dice_result))
+        .bind(action)
+        .execute(&self.pool)
+        .await
+        .unwrap();
+
+        id
     }
 }

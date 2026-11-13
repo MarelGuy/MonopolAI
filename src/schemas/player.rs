@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use crate::{
     appstate::AppState,
-    merror::{MError, MResult},
+    merror::{MError, MResult, bad_request},
 };
 
 #[derive(sqlx::FromRow, Serialize, Clone)]
@@ -46,6 +46,12 @@ impl Player {
         let Some(mut player) = Self::get(&state.pool, id).await? else {
             return Ok(None);
         };
+
+        if let Some(wins) = wins
+            && u32::try_from(wins).is_err()
+        {
+            return Err(bad_request("Wins must fit in a 32-bit unsigned integer"));
+        }
 
         if let Some(name) = name {
             player.name = name;

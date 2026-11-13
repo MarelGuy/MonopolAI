@@ -8,33 +8,19 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 
 use crate::{
     appstate::AppState,
+    cors::cors_layer,
     merror::{MError, MResultExt},
     routes::router,
 };
 
 mod appstate;
 mod cli;
+mod cors;
 mod enums;
 mod merror;
 mod requests;
 mod routes;
 mod schemas;
-
-pub fn cors_layer(origins: &[HeaderValue]) -> CorsLayer {
-    CorsLayer::new()
-        .allow_origin(AllowOrigin::list(origins.to_vec()))
-        .allow_methods([
-            axum::http::Method::GET,
-            axum::http::Method::POST,
-            axum::http::Method::PUT,
-            axum::http::Method::DELETE,
-        ])
-        .allow_headers([
-            axum::http::header::CONTENT_TYPE,
-            axum::http::header::AUTHORIZATION,
-            axum::http::HeaderName::from_static("x-data-key"),
-        ])
-}
 
 #[tokio::main]
 async fn main() -> MResult<()> {
