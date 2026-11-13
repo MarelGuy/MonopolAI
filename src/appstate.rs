@@ -1,6 +1,6 @@
 use sqlx::Sqlite;
 
-use crate::schemas::Edition;
+use crate::schemas::game::Edition;
 
 #[derive(Clone)]
 pub struct AppState {

@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::schemas::Space;
+use crate::schemas::game::Space;
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct Edition {

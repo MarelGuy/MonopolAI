@@ -8,7 +8,7 @@ use crate::{
     appstate::AppState,
     enums::{Actions, Piece},
     merror::{MError, MResult, bad_request},
-    schemas::{Edition, MatchPlayer, Player, Space, Turn},
+    schemas::{MatchPlayer, Player, Turn, game::Edition, game::Space},
 };
 
 #[derive(Serialize)]

@@ -8,7 +8,7 @@ use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
 use tower::ServiceExt;
 use uuid::Uuid;
 
-use crate::{appstate::AppState, routes::router, schemas::Edition};
+use crate::{appstate::AppState, routes::router, schemas::game::Edition};
 
 pub struct TestApp {
     pub router: Router,

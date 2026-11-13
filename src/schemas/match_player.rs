@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::{
     enums::Piece,
-    schemas::{Player, Space},
+    schemas::{Player, game::Space},
 };
 
 #[derive(Clone, Serialize)]
